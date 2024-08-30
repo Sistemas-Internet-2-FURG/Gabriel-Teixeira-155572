@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de Turmas</title>
+</head>
+
+<body>
+    <h1>Turmas</h1>
+    <ul>
+        {% for turma in turmas %}
+        <li>{{ turma[1] }} -
+            <a href="{{ url_for('editar_turma', id=turma[0]) }}">Editar</a> -
+            <a href="{{ url_for('deletar_turma', id=turma[0]) }}">Deletar</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Adicionar Nova Turma</h2>
+    <form method="post" action="{{ url_for('adicionar_turma') }}">
+        <input type="text" name="nome" placeholder="Nome da Turma" required>
+        <button type="submit">Adicionar</button>
+    </form>
+</body>
+
+</html>

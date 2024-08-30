@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de Alunos</title>
+</head>
+
+<body>
+    <h1>Alunos</h1>
+    <ul>
+        {% for aluno in alunos %}
+        <li>{{ aluno[1] }} - {{ aluno[2] }} -
+            <a href="{{ url_for('editar_aluno', id=aluno[0]) }}">Editar</a> -
+            <a href="{{ url_for('deletar_aluno', id=aluno[0]) }}">Deletar</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Adicionar Novo Aluno</h2>
+    <form method="post" action="{{ url_for('adicionar_aluno') }}">
+        <input type="text" name="nome" placeholder="Nome do Aluno" required>
+        <select name="turma_id" required>
+            <option value="" disabled selected>Selecione uma Turma</option>
+            {% for turma in turmas %}
+            <option value="{{ turma[0] }}">{{ turma[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Adicionar</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editar Aluno</title>
+</head>
+
+<body>
+    <h1>Editar Aluno</h1>
+    <form method="post" action="{{ url_for('editar_aluno', id=aluno[0]) }}">
+        <input type="text" name="nome" value="{{ aluno[1] }}" required>
+        <select name="turma_id" required>
+            {% for turma in turmas %}
+            <option value="{{ turma[0] }}" {% if turma[0]==aluno[2] %}selected{% endif %}>{{ turma[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+
+</html>

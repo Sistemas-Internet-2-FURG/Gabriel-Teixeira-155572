@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editar Turma</title>
+</head>
+
+<body>
+    <h1>Editar Turma</h1>
+    <form method="post" action="{{ url_for('editar_turma', id=turma[0]) }}">
+        <input type="text" name="nome" value="{{ turma[1] }}" required>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+
+</html>
