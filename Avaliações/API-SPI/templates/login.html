@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+
+<body>
+    <div id="body">
+        <h1>Entrar na sua conta</h1>
+        <!-- Formulário de Login -->
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+
+        <!-- Botão para exibir o formulário de registro -->
+        <h2>Não tem uma conta? <a href="register">Registrar</a></h2>
+    </div>
+
+    <script>
+        // Captura o formulário de login
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            // Pega os dados de email e senha
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Faz a requisição para a API de login
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.access_token;
+
+                // Armazena o token JWT no localStorage
+                localStorage.setItem('token', token);
+                alert('Login bem-sucedido!');
+
+                // Redireciona para a página das turmas (exemplo)
+                window.location.href = '/dashboard';
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Erro no login.');
+            }
+        });
+    </script>
+</body>
+
+</html>

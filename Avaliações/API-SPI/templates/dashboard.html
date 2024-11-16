@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <div id="body">
+    <h1>Lista de turmas</h1>
+    <ul id="turmasList"></ul>
+
+    <h1>Lista de alunos</h1>
+    <ul id="alunosList"></ul>
+    </div>
+
+    <script>
+        // Função para fazer a requisição de turmas
+        async function listarTurmas() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Você precisa estar logado para acessar as turmas.');
+                window.location.href = '/';
+                return;
+            }
+
+            const response = await fetch('/turmas', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  // Envia o token no cabeçalho
+                }
+            });
+
+            if (response.ok) {
+                const turmas = await response.json();
+                const turmasList = document.getElementById('turmasList');
+                turmasList.innerHTML = '';  // Limpa a lista antes de preencher
+                turmas.forEach(turma => {
+                    const li = document.createElement('li');
+                    li.textContent = turma[1]; // Nome da turma
+                    turmasList.appendChild(li);
+                });
+            } else {
+                alert('Erro ao carregar turmas.');
+            }
+        }
+
+        // Função para fazer a requisição de alunos
+        async function listarAlunos() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Você precisa estar logado para acessar os alunos.');
+                window.location.href = '/';
+                return;
+            }
+
+            const response = await fetch('/alunos', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            if (response.ok) {
+                const alunos = await response.json();
+                const alunosList = document.getElementById('alunosList');
+                alunosList.innerHTML = '';  // Limpa a lista antes de preencher
+                alunos.forEach(aluno => {
+                    const li = document.createElement('li');
+                    li.textContent = `${aluno[1]} - ${aluno[2]}`;  // Nome do aluno e turma
+                    alunosList.appendChild(li);
+                });
+            } else {
+                alert('Erro ao carregar alunos.');
+            }
+        }
+
+        // Chama as funções para listar turmas e alunos ao carregar a página
+        window.onload = () => {
+            listarTurmas();
+            listarAlunos();
+        };
+    </script>
+</body>
+
+</html>

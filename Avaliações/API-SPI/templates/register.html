@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+
+<body>
+    <div id="body">
+        <h1>Cadastrar novo usuário</h1>
+
+        <form id="registerForm"></form>
+        <input type="email" id="registerEmail" placeholder="Email" required><br>
+        <input type="password" id="registerPassword" placeholder="Senha" required><br>
+
+        <div id="buttons">
+            <button type="submit" id="registerButton">Registrar</button>
+            <button type="button" id="cancelRegister" onclick="window.location.href='/'">Cancelar</button>
+        </div>
+    </form>
+    </div>
+
+    <script>
+        // Enviar dados do formulário de registro
+        document.getElementById("registerButton").addEventListener("click", async function() {
+            const email = document.getElementById("registerEmail").value;
+            const password = document.getElementById("registerPassword").value;
+
+            // Faz a requisição para a API de registro
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+                window.location.href = '/login';  // Redireciona de volta ao login
+            } else {
+                alert(data.message || 'Erro no registro.');
+            }
+        });
+    </script>
+</body>
+
+</html>
